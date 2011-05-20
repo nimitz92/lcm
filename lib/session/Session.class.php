@@ -13,10 +13,11 @@ class Session {
 		INVALID_DATA = -1,
 		DATABASE_ERROR=-15;	
 	// Fields for this class - analogous to session table columns
-	protected $sid,$time,$expiry;
+	protected $sid,$uid,$time,$expiry;
 	
 	// Sets the fields with new values
-	public function read($time, $expiry) {
+	public function read($uid,$time, $expiry) {
+		$thid->uid=$$uid;
 		$this->time = $time;
 		$this->expiry = $expiry;
 	}
