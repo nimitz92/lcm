@@ -6,7 +6,9 @@
 	
 	class SessionManager{
 		
-		
+		public function __construct(){
+		self::deleteAllSessions();
+		}
 		public function addSession($mysql, $uid) {
 		
 		$time = Time::getTime();
@@ -40,17 +42,17 @@
 	public function deleteSession($mysql, $uid) {
 			$session = new Session();
 			switch($session->delete($uid,$mysql)) {
-				case User::DATABASE_ERROR :
+				case Session::DATABASE_ERROR :
 				{
 					echo "<p>A Database error has occured.</p>";
 					return;
 				}
-				case User::INVALID_DATA :
+				case Session::INVALID_DATA :
 				{
 					echo "<p>Invalid operation requested.</p>";
 					return;
 				}
-				case User::DELETE_SUCCESS : 
+				case Session::DELETE_SUCCESS : 
 				{
 					echo "<p>User deleted successfully.</p>";
 					break;
@@ -60,7 +62,10 @@
 					break;
 			}
 	}
-	
+	public static function deleteAllSessions($mysql,$time){
+		$q="delete from session where expiry<".$time.";";
+		$mysql->executeQuery($q);
+	}
 	}
 	
 	

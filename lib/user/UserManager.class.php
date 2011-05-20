@@ -6,6 +6,7 @@ require_once(ROOT . 'lib/database/MySQL.class.php');
 require_once(ROOT . 'lib/user/User.class.php');
 
 class UserManager {
+	const INVALD_ENTRY=-5;
 
 	private function getAllContacts($mysql) {
 		$query = "select uid, username, password from contacts";
@@ -194,6 +195,7 @@ DISPLAY;
 	}
 }
 	public function authenticate($mysql,$username,$password){
+		
 		$username=$mysql->escapeString($username);
 		$pass=$mysql->escapeString($password);
 		$query=sprintf("select * from user where username='%s' and password='%s'",
@@ -207,6 +209,6 @@ DISPLAY;
 			return $uid;
 		}
 		else
-			echo "Invalid details.";
+			return self::INVALID_ENTRY;
 	}
 ?>
