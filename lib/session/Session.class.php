@@ -17,7 +17,7 @@ class Session {
 	
 	// Sets the fields with new values
 	public function read($uid,$time, $expiry) {
-		$thid->uid=$$uid;
+		$thid->uid=$uid;
 		$this->time = $time;
 		$this->expiry = $expiry;
 	}

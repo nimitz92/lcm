@@ -3,7 +3,7 @@
 // Acknowledgements : Codefest 2011
 
 require_once(ROOT . 'lib/database/MySQL.class.php');
-require_once(ROOT . 'lib/contact/User.class.php');
+require_once(ROOT . 'lib/user/User.class.php');
 
 class UserManager {
 
@@ -119,7 +119,7 @@ FORM;
 	
 	public function deleteContact($mysql, $uid) {
 			$user = new User();
-			switch($con->delete($uid,$mysql)) {
+			switch($user->delete($uid,$mysql)) {
 				case User::DATABASE_ERROR :
 				{
 					echo "<p>A Database error has occured.</p>";
