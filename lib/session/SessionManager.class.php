@@ -17,7 +17,7 @@
 		$random = Random::getString(32);
 		$expiry = $time + 30*24*60*60;
 		$session->read($uid,$time,$expiry);
-			switch($session->insert($mysql)) {
+			switch($session->insert($mysql, $random)) {
 				case Session::DATABASE_ERROR :
 				{
 					echo "<p>A Database error has occured.</p>";
@@ -30,7 +30,7 @@
 				}
 				case Session::INSERT_SUCCESS : 
 				{
-					echo "<p>Session added successfully.</p>";
+					
 					return $random;
 				}
 				default :

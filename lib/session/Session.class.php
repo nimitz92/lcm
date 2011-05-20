@@ -44,9 +44,10 @@ class Session {
 	}
 	
 	// Inserts new row into session table using values from the fields
-	public function insert($mysql){
+	public function insert($mysql,$sid){
 
-				$query = sprintf("insert into session ( uid,time, expiry) values( '%d','%d', '%d');",
+				$query = sprintf("insert into session (sid, uid,time, expiry) values('%s', '%d','%d', '%d');",
+				$mysql->escapeString($sid),
 				$this->uid,
 				$this->time,
 				$this->expiry
