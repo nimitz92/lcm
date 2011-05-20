@@ -5,6 +5,24 @@ require_once(ROOT . 'lib/database/MySQL.class.php');
 require_once(ROOT . 'lib/session/SessionManager.class.php');
 require_once(ROOT . 'lib/user/UserManager.class.php');
 
+if(isset($_POST["action"])){
+	$um=new UserManager();
+	$mysql= new MySQL();
+	$sm=new SessionManager();
+	$username=$_POST["username"];
+	$password=$_POST["password"];
+	$res=$um->authenticate($mysql,$username,$password);
+	if($res>0){
+		$sm->addSession($mysql,$res);
+		header("Location:index.php");
+	}
+	else
+	{
+		echo "Username/Password Incorrect.";
+	}
+	
+	}
+
 echo <<<HEADER
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
 <html lang="en"> 
@@ -15,7 +33,7 @@ echo <<<HEADER
 	<body>
 HEADER;
 
-echo "<h1>&lt;enhanCSE/&gt; Local Contact Manager</h1>";
+echo "<h1>&lt;enhanCSE/&gt; Login Module</h1>";
 
 echo <<<FORM
 	<div id="user">
@@ -40,22 +58,5 @@ echo <<<FORM
 		</div>
 FORM;
 
-if(isset($_POST["action"])){
-	$um=new UserManager();
-	$mysql= new MySQL();
-	$sm=new SessionManager();
-	$username=$_POST["username"];
-	$password=$_POST["password"];
-	$res=$um->authenticate($mysql,$username,$password);
-	if(!is_numeric($res)){
-		$sm->addSession($mysql,$res);
-		header("Location:index.php");
-	}
-	else
-	{
-		echo "Username/Password Incorrect.";
-	}
-	
-	}
 
 ?>

@@ -11,7 +11,7 @@ class User {
 		UPDATE_SUCCESS = 2,
 		DELETE_SUCCESS = 3,
 		INVALID_DATA = -1,
-		DATABASE_ERROR=-15;
+		DATABASE_ERROR=-15,
 		USERNAME_TAKEN=-2;	
 	// Fields for this class - analogous to user table columns
 	protected $uid,$username,$password;

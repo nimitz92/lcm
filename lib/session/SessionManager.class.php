@@ -6,9 +6,10 @@
 	
 	class SessionManager{
 		
-		public function __construct(){
-		self::deleteAllSessions();
-		}
+		//public function __construct(){
+		//$mysql=new MySQL();
+		//self::deleteAllSessions($mysql,time());
+		//}
 		public function addSession($mysql, $uid) {
 		
 		$time = Time::getTime();
@@ -63,6 +64,7 @@
 			}
 	}
 	public static function deleteAllSessions($mysql,$time){
+		
 		$q="delete from session where expiry<".$time.";";
 		$mysql->executeQuery($q);
 	}

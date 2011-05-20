@@ -170,9 +170,9 @@ DISPLAY;
 			echo "<tr><td colspan='4'>No users yet.</td></tr>";
 		} else {
 			foreach($users as $user) {
-				$uid = $con[0];
-				$username = $con[1];
-				$password = $con[2];
+				$uid = $user[0];
+				$username = $user[1];
+				$password = $user[2];
 				
 				echo <<<USER
 				<tr>
@@ -193,23 +193,35 @@ USER;
 DISPLAY;
 
 	}
-}
+
 	public function authenticate($mysql,$username,$password){
 		
 		$username=$mysql->escapeString($username);
 		$pass=$mysql->escapeString($password);
-		$query=sprintf("select * from user where username='%s' and password='%s'",
+		$query=sprintf("select uid from user where username='%s' and password='%s'",
 			$username,
 			MD5("$username$pass")
 			);
 		
 		$res=$mysql->executeQuery($query);
-		$uid= mysql_result($res,"uid",0);
-		if($mysql->getRowsCount($res)){
-			
-			return $uid;
+		if ($res === false)
+		{
+			return -1;
 		}
 		else
-			return "invalid";
+		{
+			$result=$mysql->getNextRow($res);
+			
+		if($mysql->getRowsCount($res)!=1){
+		
+		return -1;
+		}
+		else
+			{
+				$uid=$result[0];
+				return $uid;
+			}
+		}
+	}
 	}
 ?>
