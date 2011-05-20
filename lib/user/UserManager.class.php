@@ -193,5 +193,20 @@ DISPLAY;
 
 	}
 }
-
+	public function authenticate($mysql,$username,$password){
+		$username=$mysql->escapeString($username);
+		$pass=$mysql->escapeString($password);
+		$query=sprintf("select * from user where username='%s' and password='%s'",
+			$username,
+			MD5("$username$pass")
+			);
+		
+		$res=$mysql->executeQuery($query);
+		$uid= mysql_result($res,"uid",0);
+		if($mysql->getRowsCount($res)){
+			return $uid;
+		}
+		else
+			echo "Invalid details.";
+	}
 ?>
