@@ -16,7 +16,7 @@
 		$session= new Session;
 		$random = Random::getString(32);
 		$expiry = $time + 30*24*60*60;
-		
+		$session->read($uid,$time,$expiry);
 			switch($session->insert($mysql)) {
 				case Session::DATABASE_ERROR :
 				{

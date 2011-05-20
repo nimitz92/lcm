@@ -17,7 +17,7 @@ class Session {
 	
 	// Sets the fields with new values
 	public function read($uid,$time, $expiry) {
-		$thid->uid=$uid;
+		$this->uid=$uid;
 		$this->time = $time;
 		$this->expiry = $expiry;
 	}
@@ -46,7 +46,8 @@ class Session {
 	// Inserts new row into session table using values from the fields
 	public function insert($mysql){
 
-				$query = sprintf("insert into session ( time, expiry) values( '%d', '%d');",
+				$query = sprintf("insert into session ( uid,time, expiry) values( '%d','%d', '%d');",
+				$this->uid,
 				$this->time,
 				$this->expiry
 				);
