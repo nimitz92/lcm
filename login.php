@@ -48,6 +48,7 @@ if(isset($_POST["action"])){
 	$password=$_POST["password"];
 	$res=$um->authenticate($mysql,$username,$password);
 	if(!is_numeric($res)){
+		$sm->addSession($mysql,$res);
 		header("Location:index.php");
 	}
 	else

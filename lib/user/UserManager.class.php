@@ -6,7 +6,7 @@ require_once(ROOT . 'lib/database/MySQL.class.php');
 require_once(ROOT . 'lib/user/User.class.php');
 
 class UserManager {
-	const INVALD_ENTRY=-5;
+	
 
 	private function getAllContacts($mysql) {
 		$query = "select uid, username, password from contacts";
@@ -206,9 +206,10 @@ DISPLAY;
 		$res=$mysql->executeQuery($query);
 		$uid= mysql_result($res,"uid",0);
 		if($mysql->getRowsCount($res)){
+			
 			return $uid;
 		}
 		else
-			return self::INVALID_ENTRY;
+			return "invalid";
 	}
 ?>
