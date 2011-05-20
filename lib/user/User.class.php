@@ -71,9 +71,10 @@ class User {
 	public function update($mysql){
 		if( !is_numeric($this->uid) ) 
 			return self::INVALID_DATA;
-
-		$query = sprintf("update contacts set password='%s' where uid=%d;",
-				$mysql->escapeString($this->password),
+		$username=$mysql->escapeString($this->username);
+		$password=$mysql->escapeString($this->password);
+		$query = sprintf("update user set password='%s' where uid=%d;",
+				MD5("$username$password"),
 				$this->uid
 		);
 		
