@@ -21,29 +21,6 @@ class UserManager {
 		$username = "";
 		$password = "";
 		
-		if($uid != 0) {
-			$user = new User();
-			switch($user->select($uid, $mysql)) {
-				case User::DATABASE_ERROR :
-				{
-					echo "<p>A Database error has occured.</p>";
-					return;
-				}
-				case User::INVALID_DATA :
-				{
-					echo "<p>Invalid operation requested.</p>";
-					return;
-				}
-				case User::SELECT_SUCCESS : 
-				{
-					$username = $user->getUsername();
-					$password = $user->getPassword();
-					break;
-				}
-				default :
-					break;
-			}
-		}
 		
 		echo <<<FORM
 		<div id="user">
@@ -53,11 +30,11 @@ class UserManager {
 					<tbody>
 						<tr>
 							<td>Username</td>
-							<td><input type="text" name="username" value="$username"/></td>
+							<td>"$username"</td>
 						</tr>
 						<tr>
 							<td>Password</td>
-							<td><input type="Password" name="password" value="$password"/></td>
+							<td><input type="Password" name="password" /></td>
 						</tr>
 							<td><input type="reset" value="Reset"/></td>
 							<td><input type="submit"  name="action" value="Save"/></td>

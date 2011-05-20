@@ -46,11 +46,14 @@ class User {
 	// Inserts new row into user table using values from the fields
 	public function insert($mysql){
 		$q=sprintf("select * from user where username='%s';", $mysql->escapeString($this->username));
-			if(!$mysql->getRowsCount())
+		$res=$mysql->executeQuery($q);
+		$username=$mysql->escapeString($this->username);
+		$password=$mysql->escapeString($this->password);
+			if(!$mysql->getRowsCount($res))
 			{
 				$query = sprintf("insert into user ( username, password) values( '%s', '%s');",
-				$mysql->escapeString($this->username),
-				$mysql->escapeString($this->password),
+				$username,
+				MD5("$username$password")
 				);
 		
 				$res = $mysql->executeQuery($query);
@@ -69,8 +72,7 @@ class User {
 		if( !is_numeric($this->uid) ) 
 			return self::INVALID_DATA;
 
-		$query = sprintf("update contacts set username='%s', password='%s' where uid=%d;",
-				$mysql->escapeString($this->username),
+		$query = sprintf("update contacts set password='%s' where uid=%d;",
 				$mysql->escapeString($this->password),
 				$this->uid
 		);
