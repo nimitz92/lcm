@@ -1,4 +1,4 @@
- <?php 
+<?php
  
 // Acknowledgements : Codefest 2011
 
@@ -29,7 +29,7 @@ class Session {
 		
 		
 			
-		$res = $mysql->executeQuery("select sid, time, expiry from session where sid=$sid;");
+		$res = $mysql->executeQuery("select uid, time, expiry from session where sid=$sid;");
 		if( $res === false ) 
 			return self::DATABASE_ERROR;
 		else if( $mysql->getRowsCount($res) != 1 ) 
@@ -37,8 +37,9 @@ class Session {
 
 		$row = $mysql->getNextRow($res);
 		$this->sid = $sid;
-		$this->time= $row[1];
-		$this->expiry = $row[2];
+		$this->uid=$row[1];
+		$this->time= $row[2];
+		$this->expiry = $row[3];
 
 		return self::SELECT_SUCCESS;
 	}
@@ -98,8 +99,11 @@ class Session {
 	
 	public function getTime(){ return $this->time; }
 	public function getExpiry() { return $this->expiry; }
+	public function getUid($sid,$mysql){
+		$this->select($sid,$mysql);
+		return $this->uid;
+	}
 
 }
 
 ?>
- 

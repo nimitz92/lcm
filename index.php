@@ -4,6 +4,11 @@ require_once('init.php');
 require_once(ROOT . 'lib/database/MySQL.class.php');
 require_once(ROOT . 'lib/contact/ContactManager.class.php');
 
+if(!isset($_COOKIE["lcmsession"])){
+	$sessionid=$_COOKIE["lcmsession"];
+	header("Location:login.php");
+}
+
 $mysql = new MySQL();
 
 $title = "Local Contact Manager";
