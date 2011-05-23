@@ -6,10 +6,10 @@
 	
 	class SessionManager{
 		
-		//public function __construct(){
-		//$mysql=new MySQL();
-		//self::deleteAllSessions($mysql,time());
-		//}
+		public function __construct(){
+		$mysql=new MySQL();
+		self::deleteAllSessions($mysql,time());
+		}
 		public function addSession($mysql, $uid) {
 		
 		$time = Time::getTime();
@@ -40,9 +40,9 @@
 
 	
 	
-	public function deleteSession($mysql, $uid) {
+	public function deleteSession($mysql, $sid) {
 			$session = new Session();
-			switch($session->delete($uid,$mysql)) {
+			switch($session->delete($sid,$mysql)) {
 				case Session::DATABASE_ERROR :
 				{
 					echo "<p>A Database error has occured.</p>";
@@ -55,7 +55,7 @@
 				}
 				case Session::DELETE_SUCCESS : 
 				{
-					echo "<p>User deleted successfully.</p>";
+					echo "<p>Session deleted successfully.</p>";
 					break;
 				}
 				
@@ -65,9 +65,21 @@
 	}
 	public static function deleteAllSessions($mysql,$time){
 		
-		$q="delete from session where expiry<".$time.";";
+		$q="delete from session where expiry<$time;";
 		$mysql->executeQuery($q);
 	}
+	
+	
+	public function getUid($sid,$mysql){
+		$q=sprintf("select uid from session where sid = '%s';",$mysql->escapeString($sid));
+		$res=$mysql->executeQuery($q);
+		
+		
+			$result=$mysql->getNextRow($res);
+			$uid=$result[0];
+			return $uid;
+		}
+		
 	}
 	
 	

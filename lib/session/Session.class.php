@@ -29,7 +29,7 @@ class Session {
 		
 		
 			
-		$res = $mysql->executeQuery("select uid, time, expiry from session where sid=$sid;");
+		$res = $mysql->executeQuery("select uid, time, expiry from session where sid='$sid';");
 		if( $res === false ) 
 			return self::DATABASE_ERROR;
 		else if( $mysql->getRowsCount($res) != 1 ) 
@@ -37,9 +37,9 @@ class Session {
 
 		$row = $mysql->getNextRow($res);
 		$this->sid = $sid;
-		$this->uid=$row[1];
-		$this->time= $row[2];
-		$this->expiry = $row[3];
+		$this->uid=$row[0];
+		$this->time= $row[1];
+		$this->expiry = $row[2];
 
 		return self::SELECT_SUCCESS;
 	}
@@ -69,7 +69,7 @@ class Session {
 		if( !is_numeric($this->sid) ) 
 			return self::INVALID_DATA;
 
-		$query = sprintf("update contacts set expiry='%d' where sid=%d;",
+		$query = sprintf("update contacts set expiry='%d' where sid='%s';",
 				$this->expiry,
 				$this->sid
 		);
@@ -83,12 +83,8 @@ class Session {
 	}
 	
 	// Deletes a session using its sid of correct owner
-	public function delete($sid, $mysql) {
-		if( !is_numeric($sid) ) 
-			return self::INVALID_DATA;
-		
-		
-		$res = $mysql->executeQuery("delete from session where sid=$sid");
+	public function delete($sid,$mysql) {
+		$res = $mysql->executeQuery("delete from session where sid='$sid';");
 		if( $res === false ) 
 			return self::DATABASE_ERROR;
 			
@@ -99,10 +95,8 @@ class Session {
 	
 	public function getTime(){ return $this->time; }
 	public function getExpiry() { return $this->expiry; }
-	public function getUid($sid,$mysql){
-		$this->select($sid,$mysql);
-		return $this->uid;
-	}
+	
+	
 
 }
 

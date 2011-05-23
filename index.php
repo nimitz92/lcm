@@ -3,14 +3,19 @@
 require_once('init.php');
 require_once(ROOT . 'lib/database/MySQL.class.php');
 require_once(ROOT . 'lib/contact/ContactManager.class.php');
+require_once(ROOT . 'lib/session/SessionManager.class.php');
 
-if(!isset($_COOKIE["lcmsession"])){
-	$sessionid=$_COOKIE["lcmsession"];
+
+if(!isset($_COOKIE["lcmsession"]) or $_COOKIE["lcmsession"]<0){
 	header("Location:login.php");
+	exit;
 }
+$sessionid=$_COOKIE["lcmsession"];
+$sm=new SessionManager();
+
 
 $mysql = new MySQL();
-
+$uid=$sm->getUid($sessionid,$mysql);
 $title = "Local Contact Manager";
 echo <<<HEADER
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
@@ -23,6 +28,7 @@ echo <<<HEADER
 HEADER;
 
 echo "<h1>&lt;enhanCSE/&gt; Local Contact Manager</h1>";
+echo '<p align="right"><a href="logout.php">Logout!</a></p>';
 
 $cm = new ContactManager();
 
@@ -40,7 +46,7 @@ if(isset($_POST['action'])){
 				echo "<p>The contact was not selected. Please try again.</p>";
 			else {
 				$cid = $_POST['cid'];
-				$cm->displayForm($mysql, $cid, 0);
+				$cm->displayForm($mysql, $cid, $uid);
 			}
 			break;
 		}
@@ -50,7 +56,7 @@ if(isset($_POST['action'])){
 				echo "<p>The contact was not selected. Please try again.</p>";
 			else {
 				$cid = $_POST['cid'];
-				$cm->deleteContact($mysql, $cid, 0);
+				$cm->deleteContact($mysql, $cid, $uid);
 			}
 			break;
 		}
@@ -64,9 +70,9 @@ if(isset($_POST['action'])){
 				$phone = $_POST['phone'];
 				$cid = $_POST['cid'];
 				if($cid == 0)
-					$cm->addContact($mysql, $name, $email, $phone, 0);
+					$cm->addContact($mysql, $name, $email, $phone, $uid);
 				else 
-					$cm->updateContact($mysql, $cid, $name, $email, $phone, 0);
+					$cm->updateContact($mysql, $cid, $name, $email, $phone, $uid);
 			}
 			break;
 		}
@@ -74,7 +80,7 @@ if(isset($_POST['action'])){
 	}
 }
 
-$cm->viewContacts(0, $mysql);
+$cm->viewContacts($uid, $mysql);
 
 echo <<<FOOTER
 		<div id="footer"><p>Powered by enhanCSE 2011</p></div>
